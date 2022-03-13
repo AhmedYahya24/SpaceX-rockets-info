@@ -1,5 +1,6 @@
 .navbar {
   width: 100%;
+  height: 60px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -20,6 +21,12 @@
 
 .right-content ul li {
   margin-left: 50px;
+}
+
+.right-content ul li a {
+  color: #fff;
+  cursor: pointer;
+  padding: 20px;
 }
 
 .left-content {

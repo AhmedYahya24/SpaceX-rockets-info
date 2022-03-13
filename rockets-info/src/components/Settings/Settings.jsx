@@ -1,55 +1,44 @@
-import React from "react";
-import { Dropdown, Menu } from "antd";
+import React, { useState } from "react";
+import { Menu } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 
 //styles
 import "./Settings.css";
 
+const { SubMenu } = Menu;
 const Settings = () => {
   // state
+  const [current, setCurrent] = useState("");
   // hook
   // functions
   function handleMenuClick(e) {
-    console.log("click", e);
+    console.log("click", e.key);
+    setCurrent(e.key);
+    console.log("🚀 ~ file: current", current);
   }
-
-  const languageMenu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">ar</Menu.Item>
-      <Menu.Item key="2">en</Menu.Item>
-    </Menu>
-  );
-  const weightMenu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">kg</Menu.Item>
-      <Menu.Item key="2">lbs</Menu.Item>
-    </Menu>
-  );
-  const distanceMenu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="1">feet</Menu.Item>
-      <Menu.Item key="2">meters</Menu.Item>
-    </Menu>
-  );
-  const menu = (
-    <Menu className="homeMenu" onClick={handleMenuClick}>
-      <Menu.Item key="1">
-        <Dropdown.Button overlay={languageMenu}>Langunge</Dropdown.Button>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <Dropdown.Button overlay={weightMenu}>Weight</Dropdown.Button>
-      </Menu.Item>
-      <Menu.Item key="3">
-        <Dropdown.Button overlay={distanceMenu}>Distance</Dropdown.Button>
-      </Menu.Item>
-    </Menu>
-  );
 
   return (
     <div className="settings">
-      <Dropdown.Button overlay={menu} className="alone">
-        <SettingOutlined />
-      </Dropdown.Button>
+      <Menu
+        onClick={handleMenuClick}
+        selectedKeys={[current]}
+        mode="horizontal"
+      >
+        <SubMenu key="SubMenu" icon={<SettingOutlined />} title="Settings">
+          <Menu.ItemGroup title="Language">
+            <Menu.Item key="en">en</Menu.Item>
+            <Menu.Item key="ar"> ar</Menu.Item>
+          </Menu.ItemGroup>
+          <Menu.ItemGroup title="Weight">
+            <Menu.Item key="kg">kg</Menu.Item>
+            <Menu.Item key="lbs">lbs</Menu.Item>
+          </Menu.ItemGroup>
+          <Menu.ItemGroup title="Distance">
+            <Menu.Item key="feet">feet</Menu.Item>
+            <Menu.Item key="meter">meter</Menu.Item>
+          </Menu.ItemGroup>
+        </SubMenu>
+      </Menu>
     </div>
   );
 };

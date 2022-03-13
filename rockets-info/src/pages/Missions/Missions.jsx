@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button, Modal } from "antd";
+import { Card, Modal } from "antd";
 import "./Missions.css";
 
 const Missions = () => {
@@ -18,13 +18,10 @@ const Missions = () => {
   return (
     <div className="cards">
       <Card
+        onClick={showModal}
         title="Default size card"
-        extra={
-          <Button type="primary" onClick={showModal}>
-            more
-          </Button>
-        }
         style={{ width: 300 }}
+        className="mrg"
       >
         <p>Name:</p>
         <p>Description:</p>

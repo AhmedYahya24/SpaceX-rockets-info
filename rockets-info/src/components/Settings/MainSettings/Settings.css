@@ -1,0 +1,12 @@
+.ant-btn {
+  width: 90px;
+}
+
+.ant-menu {
+  border-bottom: none;
+  border-radius: 25px;
+}
+
+.ant-menu-submenu-title {
+  font-size: 18px;
+}

@@ -7,13 +7,14 @@ import "./index.css";
 import App from "./App";
 
 const client = new QueryClient();
+
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <QueryClientProvider client={client}>
+    <QueryClientProvider client={client}>
+      <Provider store={store}>
         <App />
-      </QueryClientProvider>
-    </Provider>
+      </Provider>
+    </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

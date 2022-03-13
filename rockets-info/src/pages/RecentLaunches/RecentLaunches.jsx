@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Table, Modal } from "antd";
+import TableSettings from "../../components/Settings/TableSettings";
 
 const data = [];
 const RecentLaunches = () => {
@@ -48,13 +49,6 @@ const RecentLaunches = () => {
       width: 150,
     },
     { title: "Media Show icons ", dataIndex: "address", key: "8" },
-    {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
-      width: 100,
-      render: () => <a onClick={showModal}>modal</a>,
-    },
   ];
 
   for (let i = 0; i < 100; i++) {
@@ -76,6 +70,7 @@ const RecentLaunches = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
   return (
     <div>
       <div
@@ -88,7 +83,19 @@ const RecentLaunches = () => {
       >
         Filter space
       </div>
-      <Table columns={columns} dataSource={data} scroll={{ x: 1500 }} />
+      <Table
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (event) => {
+              showModal();
+            }, // click row
+          };
+        }}
+        columns={columns}
+        dataSource={data}
+        size="middle"
+        className="table"
+      />
       <Modal
         title="Basic Modal"
         visible={isModalVisible}
@@ -110,6 +117,7 @@ const RecentLaunches = () => {
         <p>Success rate:</p>
         <p>Rocket Description:</p>
       </Modal>
+      <TableSettings />
     </div>
   );
 };

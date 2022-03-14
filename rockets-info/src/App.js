@@ -4,9 +4,12 @@ import Home from "./pages/Home";
 import RecentLaunches from "./pages/RecentLaunches";
 import Missions from "./pages/Missions";
 import NotFound from "./pages/NotFound";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { useReactQuery } from "./utils/hooks/useReactQuery/useReactQuery";
+//styles
 import "./App.css";
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <div className="container">
@@ -19,8 +22,9 @@ function App() {
           </Routes>
         </Router>
       </div>
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </div>
   );
-}
+};
 
 export default App;

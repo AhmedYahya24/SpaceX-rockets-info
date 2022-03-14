@@ -1,64 +1,38 @@
 import React, { useState } from "react";
 import { Table, Modal } from "antd";
+import { columns } from "../../components/Settings/TableSettings/TableSettings";
 import TableSettings from "../../components/Settings/TableSettings";
+import { useReactQuery } from "../../utils/hooks/useReactQuery/useReactQuery";
+//styles
+import "./RecentLaunches.css";
+const tableData = [];
 
-const data = [];
+//constants
+const modalData = {
+  name: "",
+  icon: "",
+  site: "",
+  date: "",
+  description: "",
+  successRate: "",
+  diameter: "",
+  mass: "",
+  costPerLaunch: "",
+  badge: "mmmmmmm",
+  images: "",
+  media: "",
+  upcoming: "",
+  successRate: "",
+};
 const RecentLaunches = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const columns = [
-    {
-      title: "Mission icon",
-      dataIndex: "address",
-      key: "1",
-      width: 150,
-    },
-    {
-      title: "Launch site",
-      dataIndex: "address",
-      key: "2",
-      width: 150,
-    },
-    {
-      title: "Rocket name",
-      dataIndex: "address",
-      key: "3",
-      width: 150,
-    },
-    {
-      title: "Rocket country",
-      dataIndex: "address",
-      key: "4",
-      width: 150,
-    },
-    {
-      title: "Launch date",
-      dataIndex: "address",
-      key: "5",
-      width: 150,
-    },
-    {
-      title: "Mission name",
-      dataIndex: "address",
-      key: "6",
-      width: 150,
-    },
-    {
-      title: "Is upcoming",
-      dataIndex: "address",
-      key: "7",
-      width: 150,
-    },
-    { title: "Media Show icons ", dataIndex: "address", key: "8" },
-  ];
+  //useQuery
+  const { data, status, isError } = useReactQuery();
+  data && console.log(data.launchesPastResult.data);
 
-  for (let i = 0; i < 100; i++) {
-    data.push({
-      key: i,
-      name: `Edrward ${i}`,
-      age: 32,
-      address: `London Park no. ${i}`,
-    });
-  }
+  //handleVisible
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  //functions
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -71,53 +45,77 @@ const RecentLaunches = () => {
     setIsModalVisible(false);
   };
 
+  //push data to table
+  if (data) {
+    for (let i = 0; i < 100; i++) {
+      const d = data.launchesPastResult.data[i];
+      tableData.push({
+        key: `${d.launch_date_local}`,
+        address: `${d.launch_date_local}`,
+        icon: <img src={d.links.mission_patch} className="image" />,
+        site: `${d.launch_site.site_name}`,
+        name: d.rocket.rocket_name,
+        country: d.rocket.rocket.country,
+        date: d.launch_date_local,
+        missionName: d.mission_name,
+        upcoming: `${d.upcoming}`,
+        mediaIcon: <img src={d.links.mission_patch_small} className="image" />,
+      });
+    }
+  }
+
+  const presentModal = (_) => {
+    return (
+      <>
+        <p>Mission icon:{modalData.icon} </p>
+        <p>Launch site: {modalData.site}</p>
+        <p>Rocket name: {modalData.name}</p>
+        <p>Launch date: {modalData.date}</p>
+        <p>Mission name:{modalData.name}</p>
+        <p>Is upcoming: {modalData.upcoming}</p>
+        <p>Media: {modalData.media}</p>
+        <p>images: {modalData.icon}</p>
+        <p>Rocket badge:{modalData.badge}</p>
+        <p>Cost per launch:{modalData.costPerLaunch}</p>
+        <p>Mass: {modalData.mass}</p>
+        <p>Diameter: {modalData.diameter}</p>
+        <p>Success rate: {modalData.rate}</p>
+        <p>Rocket Description: {modalData.description} </p>
+      </>
+    );
+  };
+
   return (
     <div>
-      <div
-        style={{
-          width: "100%",
-          height: "60px",
-          background: "#888",
-          color: "#fff",
-        }}
-      >
-        Filter space
-      </div>
-      <Table
-        onRow={(record, rowIndex) => {
-          return {
-            onClick: (event) => {
-              showModal();
-            }, // click row
-          };
-        }}
-        columns={columns}
-        dataSource={data}
-        size="middle"
-        className="table"
-      />
-      <Modal
-        title="Basic Modal"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <p>Mission icon:</p>
-        <p>Launch site:</p>
-        <p>Rocket name:</p>
-        <p>Launch date:</p>
-        <p>Mission name:</p>
-        <p>Is upcoming:</p>
-        <p>Media:</p>
-        <p>images:</p>
-        <p>Rocket badge:</p>
-        <p>Cost per launch:</p>
-        <p>Mass:</p>
-        <p>Diameter:</p>
-        <p>Success rate:</p>
-        <p>Rocket Description:</p>
-      </Modal>
-      <TableSettings />
+      {data ? (
+        <>
+          <Table
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: (event) => {
+                  showModal();
+                }, // click row
+              };
+            }}
+            columns={columns}
+            dataSource={tableData}
+            size="middle"
+            className="table"
+          />
+
+          <Modal
+            title="Basic Modal"
+            visible={isModalVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            {presentModal()}
+          </Modal>
+          <TableSettings />
+        </>
+      ) : (
+        <p>loading ...</p>
+      )}
     </div>
   );
 };
